@@ -672,10 +672,10 @@ form {
 #main-content h4 {
   margin-bottom: 8px;
   font-family: 'Architects Daughter', 'Helvetica Neue', Helvetica, Arial, serif;
-  font-size: 15px;
+  font-size: 13px;
   font-weight: bold;
   color: #474747;
-  text-indent: 3px;
+  text-indent: 35px;
 }
 
 h4:before {
