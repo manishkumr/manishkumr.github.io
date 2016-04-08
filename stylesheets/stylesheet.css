@@ -737,7 +737,15 @@ ul {
   list-style: disc;
   padding-left: 20px;
 }
+ul#technical_skills > li
+{
+   
+    color: #666;
+}
 
+li {
+	color: #0B90E2;
+}
 ol {
   list-style-position: inside;
   list-style: decimal;
