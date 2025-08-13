@@ -1,191 +1,460 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset='utf-8'>
-<meta http-equiv="X-UA-Compatible" content="chrome=1">
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, maximum-scale=1">
-<link href='https://fonts.googleapis.com/css?family=Pinyon+Script'
-	rel='stylesheet' type='text/css'>
-<link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css"
-	media="screen">
-<link rel="stylesheet" type="text/css"
-	href="stylesheets/github-light.css" media="screen">
-<link rel="stylesheet" type="text/css" href="stylesheets/print.css"
-	media="print">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Software Engineer | Profile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f6f8fa;
+            color: #24292e;
+        }
+        .profile-nav-link {
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            border-bottom: 3px solid transparent;
+        }
+        .profile-nav-link.active, .profile-nav-link:hover {
+            border-bottom-color: #f9826c;
+            color: #0366d6;
+        }
+        .main-content-section, #learning-detail-view, .learning-module-content {
+            display: none;
+        }
+        .main-content-section.active, #learning-detail-view.active, .learning-module-content.active {
+            display: block;
+        }
 
-<!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-
-<title>Manish kumar Profile</title>
+        /* Styles from the Learning Module */
+        .learning-module .content-section {
+            display: none;
+        }
+        .learning-module .content-section.active {
+            display: block;
+        }
+        .learning-module .nav-link {
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+        .learning-module .nav-link.active, .learning-module .nav-link:hover {
+            background-color: #E2725B;
+            color: white;
+        }
+        .learning-module .sub-nav-link.active, .learning-module .sub-nav-link:hover {
+            color: #E2725B;
+            font-weight: 600;
+        }
+        .learning-module .code-block {
+            background-color: #2d3748;
+            color: #f7fafc;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            position: relative;
+        }
+        .learning-module .copy-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background-color: #4a5568;
+            color: white;
+            border: none;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        .learning-module .copy-btn:hover {
+            background-color: #718096;
+        }
+        .learning-module .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .learning-module .chart-container {
+                height: 400px;
+            }
+        }
+        .learning-module .comparison-item.active {
+            background-color: #f0eade;
+        }
+        .learning-module .n1-query {
+            opacity: 0;
+            animation: fadeIn 0.5s forwards;
+        }
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+    </style>
 </head>
+<body class="antialiased">
+    <div class="container mx-auto p-4 md:p-8">
+        <!-- This view contains the main profile content -->
+        <div id="main-profile-view">
+            <!-- Profile Header -->
+            <header class="flex flex-col md:flex-row items-center md:items-start gap-6 mb-8">
+                <img src="https://manishkumr.github.io/assets/images/profile.png" alt="Profile Picture" class="w-36 h-36 rounded-full border-4 border-white shadow-lg">
+                <div class="mt-4 text-center md:text-left">
+                    <h1 class="text-4xl font-bold text-gray-800">Manish Kumar</h1>
+                    <p class="text-xl text-gray-500">Software Engineer | Full Stack Developer</p>
+                    <div class="flex flex-wrap items-center justify-center md:justify-start gap-4 mt-2 text-gray-600">
+                        <div class="flex items-center gap-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" /></svg>
+                            <span>Australia</span>
+                        </div>
+                        <div class="flex items-center gap-1">
+                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" /><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" /></svg>
+                            <a href="mailto:rishimanish123@gmail.com" class="hover:text-blue-600">rishimanish123@gmail.com</a>
+                        </div>
+                        <div class="flex items-center gap-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                            <a href="https://www.linkedin.com/in/manishkumr/" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">LinkedIn</a>
+                        </div>
+                    </div>
+                </div>
+            </header>
 
-<body>
-	<header>
-		<div class="inner">
-			<h1>Manish Kumar</h1>
-			<h2>
-				Contact me : <a href="mailto:manish@manish.info" target="_top">manish@manish.info</a>
-			</h2>
-			<a href="https://github.com/manishkumr" class="button"><small>Follow
-					me on</small> GitHub</a>
-		</div>
-	</header>
+            <!-- Navigation -->
+            <nav class="border-b border-gray-300 mb-8">
+                <ul id="profile-nav" class="flex items-center gap-6 text-lg font-semibold text-gray-500">
+                    <li><a data-target="about" class="profile-nav-link py-3 px-1 block">About Me</a></li>
+                    <li><a data-target="projects" class="profile-nav-link py-3 px-1 block">Projects</a></li>
+                    <li><a data-target="learning" class="profile-nav-link py-3 px-1 block">Learning</a></li>
+                </ul>
+            </nav>
 
-	<div id="content-wrapper">
-		<div class="inner clearfix">
-		<!-- 
-			<div class = "left_nav" style="border: 1px solid black">
-			margin-left: -163px;
-    position: absolute;
-    height: 100px;
-    width: 205px;
-			<ul>
-				<li><a href = "#about_me">About Me</a></li>
-				</ul>
-			
-			
-			</div>
-			 -->
-			<section id="main-content">
-				
-				
-				
-				<h3>
-					<a id="about_me" class="anchor"
-						href="#about_me" aria-hidden="true"><span
-						aria-hidden="true" class="octicon octicon-link"></span></a>About Me
-				</h3>
+            <!-- Main Content Area -->
+            <main>
+                <section id="about" class="main-content-section bg-white p-8 rounded-lg shadow-md">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">About Me</h2>
+                    <p class="text-lg text-gray-700 leading-relaxed">
+                        I'm a Software Engineer and Full Stack Developer with a passion for building scalable, efficient solutions from the ground up. Specializing in Python, Django, and React, I have a deep interest in cloud and DevOps technologies, particularly within the AWS and Azure ecosystems. I thrive on tackling complex challenges and enjoy architecting robust systems that solve real-world problems.
+                    </p>
+                    <p class="text-lg text-gray-700 leading-relaxed mt-4">
+                        When I'm not coding or exploring new technologies, I enjoy spending quality time with my wife and our wonderful 4-year-old daughter. Family is my anchor, and their support fuels my professional drive and creativity.
+                    </p>
+                </section>
+                <section id="projects" class="main-content-section bg-white p-8 rounded-lg shadow-md"><h2 class="text-3xl font-bold text-gray-800 mb-4">Projects</h2><p class="text-lg text-gray-700 mb-6">Here are a few projects I've worked on. (You can replace these with your actual projects).</p><div class="grid md:grid-cols-2 gap-6"><div class="border border-gray-200 rounded-lg p-6 hover:shadow-xl transition-shadow"><h3 class="text-xl font-bold mb-2">Project One</h3><p class="text-gray-600">A brief description of the project, the technologies used, and what you learned from it.</p><a href="#" class="text-blue-600 font-semibold mt-4 inline-block">View on GitHub &rarr;</a></div><div class="border border-gray-200 rounded-lg p-6 hover:shadow-xl transition-shadow"><h3 class="text-xl font-bold mb-2">Project Two</h3><p class="text-gray-600">A brief description of the project, the technologies used, and what you learned from it.</p><a href="#" class="text-blue-600 font-semibold mt-4 inline-block">View on GitHub &rarr;</a></div></div></section>
+                <section id="learning" class="main-content-section bg-white p-8 rounded-lg shadow-md">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">Learning Modules</h2>
+                    <p class="text-lg text-gray-700 mb-6">A collection of interactive guides and notes on various technologies I'm exploring.</p>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="learning-card border border-gray-200 rounded-lg p-6 hover:shadow-xl transition-shadow cursor-pointer" data-target="django-graphql-module">
+                            <h3 class="text-xl font-bold mb-2">Interactive Guide to Django & GraphQL</h3>
+                            <p class="text-gray-600">A deep dive into building modern APIs with Django and GraphQL, from foundational concepts to production-ready techniques.</p>
+                            <span class="text-blue-600 font-semibold mt-4 inline-block">Open Guide &rarr;</span>
+                        </div>
+                        <!-- Future learning cards will go here -->
+                    </div>
+                </section>
+            </main>
+        </div>
 
-				<p>I am passionate Bioinformatics programmer having more than
-					3.5 years of experience in developing softwares for analyzing,
-					visualizing and integrating Biomedical/Healthcare data.</p>
-				<h3>
-					<a id="tech_skills" class="anchor"
-						href="#welcome-to-github-pages" aria-hidden="true"><span
-						aria-hidden="true" class="octicon octicon-link"></span></a>Technical Skills
-				</h3>
+        <!-- This view contains the detailed learning module content -->
+        <div id="learning-detail-view">
+            <button id="back-to-profile" class="mb-6 bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-lg hover:bg-gray-300 transition">&larr; Back to Profile</button>
+            
+            <!-- Django & GraphQL Module -->
+            <div id="django-graphql-module" class="learning-module-content learning-module">
+                <div class="flex flex-col md:flex-row min-h-screen bg-white rounded-lg shadow-md overflow-hidden">
+                    <aside class="w-full md:w-64 lg:w-72 bg-[#f0eade] p-6 shadow-lg md:sticky top-0 h-auto md:h-screen overflow-y-auto"><h1 class="text-2xl font-bold text-[#4C516D] mb-6">Django & GraphQL</h1><nav id="main-nav"><ul><li class="mb-4"><div data-target="part1" class="nav-link p-3 rounded-lg font-bold">Part I: Foundations</div><ul class="sub-nav ml-4 mt-2 space-y-2 hidden"><li><a href="#chapter1" data-target="chapter1" class="sub-nav-link block">1. Deconstructing GraphQL</a></li><li><a href="#chapter2" data-target="chapter2" class="sub-nav-link block">2. GraphQL vs. REST</a></li></ul></li><li class="mb-4"><div data-target="part2" class="nav-link p-3 rounded-lg font-bold">Part II: The Tutorial</div><ul class="sub-nav ml-4 mt-2 space-y-2 hidden"><li><a href="#chapter3" data-target="chapter3" class="sub-nav-link block">3. Project Setup</a></li><li><a href="#chapter4" data-target="chapter4" class="sub-nav-link block">4. Defining Schemas</a></li><li><a href="#chapter5" data-target="chapter5" class="sub-nav-link block">5. Crafting Queries</a></li><li><a href="#chapter6" data-target="chapter6" class="sub-nav-link block">6. Implementing Mutations</a></li></ul></li><li class="mb-4"><div data-target="part3" class="nav-link p-3 rounded-lg font-bold">Part III: Production APIs</div><ul class="sub-nav ml-4 mt-2 space-y-2 hidden"><li><a href="#chapter7" data-target="chapter7" class="sub-nav-link block">7. Security</a></li><li><a href="#chapter8" data-target="chapter8" class="sub-nav-link block">8. Advanced Retrieval</a></li><li><a href="#chapter9" data-target="chapter9" class="sub-nav-link block">9. Performance (N+1)</a></li></ul></li><li class="mb-4"><div data-target="part4" class="nav-link p-3 rounded-lg font-bold">Part IV: The Ecosystem</div><ul class="sub-nav ml-4 mt-2 space-y-2 hidden"><li><a href="#chapter11" data-target="chapter11" class="sub-nav-link block">11. Library Comparison</a></li></ul></li></ul></nav></aside>
+                    <main class="flex-1 p-6 md:p-10 bg-white/50">
+                        <section id="intro" class="content-section active"><h2 class="text-4xl font-bold text-[#4C516D] mb-4">A Comprehensive Guide to Django & GraphQL</h2><p class="text-lg text-gray-600 mb-6">Welcome to the interactive guide for building modern APIs with Django and GraphQL. This application translates a detailed written guide into an explorable experience. Use the navigation on the left to move between sections, from foundational concepts to advanced, production-ready techniques.</p><div class="grid md:grid-cols-2 gap-6"><div class="bg-white p-6 rounded-lg shadow"><h3 class="font-bold text-xl mb-2 text-[#8A9A5B]">Interactive Learning</h3><p>Instead of just reading, you can interact with the content. Compare technologies side-by-side, see code walkthroughs, and explore data visualizations that bring concepts to life.</p></div><div class="bg-white p-6 rounded-lg shadow"><h3 class="font-bold text-xl mb-2 text-[#E2725B]">For All Levels</h3><p>Whether you're new to GraphQL or an experienced Django developer looking to add a new skill, this guide is structured to provide value at every level of expertise.</p></div></div></section>
+                        <section id="chapter1" class="content-section"><h2 class="text-3xl font-bold text-[#4C516D] mb-2">1. Deconstructing GraphQL</h2><h3 class="text-xl font-semibold text-gray-700 mb-6">What is GraphQL and Why Does It Matter?</h3><p class="mb-4">This section introduces the core ideas behind GraphQL. It's not a database or a specific technology, but a new way for clients (like web or mobile apps) and servers to talk to each other. Its main goal is to make data fetching more efficient by letting the client ask for exactly what it needs, and nothing more.</p><div class="bg-white p-6 rounded-lg shadow-md space-y-4"><div><h4 class="font-bold text-lg text-[#8A9A5B]">The Schema: A Contract</h4><p>The schema is the foundation. It's a strongly-typed contract that defines every piece of data a client can access, acting as the single source of truth for your API's capabilities.</p></div><div><h4 class="font-bold text-lg text-[#8A9A5B]">Queries: Reading Data</h4><p>Queries are for fetching data. The client sends a query that mirrors the structure of the JSON response it wants, eliminating the problem of "over-fetching" (getting too much data).</p></div><div><h4 class="font-bold text-lg text-[#8A9A5B]">Mutations: Writing Data</h4><p>Mutations are used for creating, updating, or deleting data. They make data modification explicit and predictable.</p></div><div><h4 class="font-bold text-lg text-[#8A9A5B]">Introspection: A Self-Documenting API</h4><p>One of GraphQL's most powerful features is the ability to query the schema itself. This allows for powerful developer tools and ensures documentation is always up-to-date.</p></div></div></section>
+                        <section id="chapter2" class="content-section"><h2 class="text-3xl font-bold text-[#4C516D] mb-2">2. A Paradigm Shift: GraphQL vs. REST</h2><p class="mb-6">This section explores the key differences between GraphQL and the traditional REST architectural style. Understanding these distinctions is crucial for choosing the right tool for your project. The core difference lies in how data is fetched and structured. Click on a feature below to see how each approach handles it.</p><div class="flex flex-col md:flex-row gap-6"><div class="md:w-1/3"><ul id="comparison-nav" class="space-y-2"><li class="comparison-item p-4 rounded-lg cursor-pointer bg-gray-100" data-feature="fetching">Data Fetching</li><li class="comparison-item p-4 rounded-lg cursor-pointer bg-gray-100" data-feature="endpoints">Endpoint Structure</li><li class="comparison-item p-4 rounded-lg cursor-pointer bg-gray-100" data-feature="versioning">Versioning</li><li class="comparison-item p-4 rounded-lg cursor-pointer bg-gray-100" data-feature="caching">Caching</li><li class="comparison-item p-4 rounded-lg cursor-pointer bg-gray-100" data-feature="errors">Error Handling</li></ul></div><div class="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6" id="comparison-content"></div></div></section>
+                        <section id="chapter3" class="content-section"><h2 class="text-3xl font-bold text-[#4C516D] mb-2">3. Project Scaffolding and Configuration</h2><p class="mb-6">This chapter walks you through the initial setup of a Django project that's ready for GraphQL. It covers creating a virtual environment, installing the necessary packages, and configuring your Django settings to work with the `graphene-django` library.</p><h3 class="text-xl font-semibold text-gray-700 mt-6 mb-4">1. Environment Setup & Installation</h3><p class="mb-4">First, set up an isolated Python environment and install Django and Graphene.</p><div class="code-block"><button class="copy-btn">Copy</button><pre><code># Create and activate a virtual environment
+python3 -m venv venv
+source venv/bin/activate
 
-				<h4>Scripting and Programming languages</h4>
-				<ul>
-				<li>Java, Perl, Python, R, bash.</li>
-				</ul>
-				<h4>Web Technologies and Frameworks</h4>
-				<ul>
-				<li>Spring MVC framework, Groovy and Grails, HTML, CSS, JavaScript, AJAX, JQery, REST API, SOAP API, Apache Web Server, Apache Tomcat, JBoss.</li>
-				</ul>
-				<h4>Software Testing</h4>
-				<ul>
-				<li>Manual Testing, JUnit, Selenium.</li>
-				</ul>
-				<h4>Software/tools</h4>
-				<ul>
-				<li><b>Clinical/Healthcare data management tools: </b>OpenClinica, ClinCapture, Mirth, OpenSpecimen.</li>
-				<li><b>Machine Learning: </b> Weka, LibSVM, Mallet.</li>
-				<li><b>OS: </b> Windows, Windows Server, Linux.</li>
-				<li><b>IDE: </b> Eclipse, Spring Tool Suite, RStudio, Netbeans. </li>
-				<li><b>Version Tracking: </b> GitHub, Bamboo.</li>
-				<li><b>Project Management/ Bug Tracking: </b> Confluence, Jira.</li>
-				</ul>	
-				<h3>
-					<a id="welcome-to-github-pages" class="anchor"
-						href="#welcome-to-github-pages" aria-hidden="true"><span
-						aria-hidden="true" class="octicon octicon-link"></span></a>Projects
-				
-				</h3>
-				<h4>Text Mining/Data Mining</h4>
-				<h4>Clinical Data Management</h4>
-				<h4>Web application development</h4>
-				<h4>Shared tasks/Challenges</h4>	
-				
-				<h3>
-					<a id="welcome-to-github-pages" class="anchor"
-						href="#welcome-to-github-pages" aria-hidden="true"><span
-						aria-hidden="true" class="octicon octicon-link"></span></a>Publications
-				</h3>
-				<ul id="technical_skills">
-				<li>
-				<p>Kumar, M., Ghosh, S., Valadi, J., & Siarry, P. (2013). <b>Simultaneous Gene Selection and Cancer Classification Using a Hybrid Intelligent Water Drop Approach.</b> In P. Maji, A. Ghosh, M. N. Murty, K. Ghosh & S. Pal (Eds.), Pattern Recognition and Machine Intelligence (Vol. 8251, pp. 641-646): Springer Berlin Heidelberg.</p>
-				</li>
-				<li>
-				<p>Kumar, M., Jayaraman, S., Bhat, S., Ghosh, S., & Jayaraman, V. K. (2014). <b>Variable Selection and Fault Detection Using a Hybrid Intelligent Water Drop Algorithm.</b>In B. V. Babu, A. Nagar, K. Deep, M. Pant, J. C. Bansal, K. Ray & U. Gupta (Eds.), Proceedings of the Second International Conference on Soft Computing for Problem Solving (SocProS 2012), December 28-30, 2012 (Vol. 236, pp. 225-231): Springer India.</p>
-				</li>
-				<li>
-				<p>Jonnagaddala, J., Liaw, S.-T., Ray, P., Kumar, M., Chang, N.-W., & Dai, H.-J.<b> Coronary artery disease risk assessment from unstructured electronic health records using text mining.</b> Journal of Biomedical Informatics. doi: http://dx.doi.org/10.1016/j.jbi.2015.08.003
-				</p>
-				</li>
-				<li>
-				<p>Jonnagaddala, J., Liaw, S.-T., Ray, P., Kumar, M., Dai, H.-J., & Hsu, C.-Y. (2015). <b>Identification and Progression of Heart Disease Risk Factors in Diabetic Patients from Longitudinal Electronic Health Records.</b> BioMed Research International, 2015, 10. doi: 10.1155/2015/636371
-				</p>
-				</li>
-				<li>
-				<p>Jonnagaddala, J., Liaw, S.-T., Ray, P., Kumar, M., & Dai, H.-J. (2014). <b>HTNSystem: Hypertension Information Extraction System for Unstructured Clinical Notes.</b> In S.-M. Cheng & M.-Y. Day (Eds.), Technologies and Applications of Artificial Intelligence (Vol. 8916, pp. 219-227): Springer International Publishing.
-				</p>
-				</li>
-				<li>
-				<p>Jonnagaddalaa, J., Liaw, S.-T., Rayb, P., Kumarc, M., & Dai, H.-J. (2015).<b> TMUNSW: Identification of disorders and normalization to SNOMED-CT terminology in unstructured clinical notes. </b>
-				</p>
-				</li>
-				</ul>
-				<h3>
-					<a id="welcome-to-github-pages" class="anchor"
-						href="#welcome-to-github-pages" aria-hidden="true"><span
-						aria-hidden="true" class="octicon octicon-link"></span></a>Work Experiences
-				</h3>
-				<h4>Translational Bioinformatics Officer, UNSW, Australia</h4>
-				<h4>Domain Analyst, Krishagni Solutions Pvt Ltd, Pune, India</h4>
-				<h3>
-					<a id="welcome-to-github-pages" class="anchor"
-						href="#welcome-to-github-pages" aria-hidden="true"><span
-						aria-hidden="true" class="octicon octicon-link"></span></a>Qualifications
-				</h3>
-				<h4>Masters in Bioinformatics</h4>
-				<h4>Bachelors in Medical Biotechnology</h4>
-				<h3>
-					<a id="welcome-to-github-pages" class="anchor"
-						href="#welcome-to-github-pages" aria-hidden="true"><span
-						aria-hidden="true" class="octicon octicon-link"></span></a>Resume
-				</h3>
-				<p>
-				<!--
-				<iframe src="https://drive.google.com/file/d/0B9T-P8ehvsQgdkhFdVJQd2ZDTWs/preview" width="640" height="480"></iframe>
-				 <iframe src="https://drive.google.com/file/d/0B9T-P8ehvsQgV0lrRjNPU3JiVTg/view?usp=sharing&embedded=true" style="width:718px; height:700px;" frameborder="0"></iframe> -->
-				
-				</p>
-				<!-- 
-<h3>
-<a id="designer-templates" class="anchor" href="#designer-templates" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Designer Templates</h3>
+# Install dependencies
+pip install django graphene-django</code></pre></div><h3 class="text-xl font-semibold text-gray-700 mt-6 mb-4">2. Create Django Project & App</h3><div class="code-block"><button class="copy-btn">Copy</button><pre><code># Create a new Django project
+django-admin startproject myproject .
 
-<p>We’ve crafted some handsome templates for you to use. Go ahead and click 'Continue to layouts' to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved.</p>
+# Create a new app
+python manage.py startapp books</code></pre></div><h3 class="text-xl font-semibold text-gray-700 mt-6 mb-4">3. Configure `settings.py`</h3><p class="mb-4">Add `graphene_django` and your new app to `INSTALLED_APPS`, and define the path to your schema.</p><div class="code-block"><button class="copy-btn">Copy</button><pre><code># myproject/settings.py
+INSTALLED_APPS = [
+    # ...
+    'graphene_django',
+    'books',
+]
 
-<h3>
-<a id="creating-pages-manually" class="anchor" href="#creating-pages-manually" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Creating pages manually</h3>
+GRAPHENE = {
+    'SCHEMA': 'myproject.schema.schema',
+}</code></pre></div><h3 class="text-xl font-semibold text-gray-700 mt-6 mb-4">4. Configure `urls.py`</h3><p class="mb-4">Set up the single `/graphql` endpoint. The `graphiql=True` flag gives you a powerful in-browser IDE for testing.</p><div class="code-block"><button class="copy-btn">Copy</button><pre><code># myproject/urls.py
+from django.urls import path
+from django.views.decorators.csrf import csrf_exempt
+from graphene_django.views import GraphQLView
 
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
+urlpatterns = [
+    # ...
+    path("graphql/", csrf_exempt(GraphQLView.as_view(graphiql=True))),
+]</code></pre></div></section>
+                        <section id="chapter4" class="content-section"><h2 class="text-3xl font-bold text-[#4C516D] mb-2">4. Defining the Schema</h2><p class="mb-6">The core of the integration is mapping your Django models to GraphQL types. This is done using `DjangoObjectType` from `graphene-django`, which automatically converts model fields into GraphQL fields.</p><h3 class="text-xl font-semibold text-gray-700 mt-6 mb-4">1. Define a Django Model</h3><p class="mb-4">Create a simple `Book` model in `books/models.py`.</p><div class="code-block"><button class="copy-btn">Copy</button><pre><code># books/models.py
+from django.db import models
 
-<h3>
-<a id="authors-and-contributors" class="anchor" href="#authors-and-contributors" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Authors and Contributors</h3>
+class Book(models.Model):
+    title = models.CharField(max_length=200)
+    author = models.CharField(max_length=100)
+    publication_year = models.IntegerField()
 
-<p>You can <a href="https://help.github.com/articles/basic-writing-and-formatting-syntax/#mentioning-users-and-teams" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor’s GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
+    def __str__(self):
+        return self.title</code></pre></div><h3 class="text-xl font-semibold text-gray-700 mt-6 mb-4">2. Create the GraphQL Type</h3><p class="mb-4">In a new `books/schema.py` file, map the `Book` model to a `BookType`. It's critical to use the `fields` attribute to explicitly declare which model fields are exposed in the API to prevent accidentally leaking sensitive data.</p><div class="code-block"><button class="copy-btn">Copy</button><pre><code># books/schema.py
+import graphene
+from graphene_django import DjangoObjectType
+from .models import Book
 
-<h3>
-<a id="support-or-contact" class="anchor" href="#support-or-contact" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Support or Contact</h3>
+class BookType(DjangoObjectType):
+    class Meta:
+        model = Book
+        # Explicitly list fields to expose
+        fields = ('id', 'title', 'author', 'publication_year')</code></pre></div></section>
+                        <section id="chapter5" class="content-section"><h2 class="text-3xl font-bold text-[#4C516D] mb-2">5. Crafting Queries</h2><p class="mb-6">With your types defined, you can now create the entry points for clients to read data. These are defined as fields on a root `Query` object, with corresponding `resolve_` functions that fetch the data using the Django ORM.</p><h3 class="text-xl font-semibold text-gray-700 mt-6 mb-4">Define Queries and Resolvers</h3><p class="mb-4">In `books/schema.py`, create a `Query` class with fields for fetching all books and a single book by its ID. Each field has a resolver function that contains the data-fetching logic.</p><div class="code-block"><button class="copy-btn">Copy</button><pre><code># books/schema.py
+# ... (after BookType)
 
-<p>Having trouble with Pages? Check out our <a href="https://help.github.com/pages">documentation</a> or <a href="https://github.com/contact">contact support</a> and we’ll help you sort it out.</p>
- -->
-			</section>
+class Query(graphene.ObjectType):
+    all_books = graphene.List(BookType)
+    book_by_id = graphene.Field(BookType, id=graphene.Int(required=True))
 
-			<aside id="sidebar">
+    def resolve_all_books(self, info):
+        # Uses the Django ORM to get all books
+        return Book.objects.all()
 
-				<a href="https://github.com/manishkumr" class="myPic"></a>
-				<p style="color: red">
-					This page is under construction.
-				</p>
-			</aside>
-		</div>
-	</div>
+    def resolve_book_by_id(self, info, id):
+        try:
+            # Gets a single book by primary key
+            return Book.objects.get(pk=id)
+        except Book.DoesNotExist:
+            return None</code></pre></div><h3 class="text-xl font-semibold text-gray-700 mt-6 mb-4">Test in GraphiQL</h3><p class="mb-4">After running `python manage.py runserver` and adding some books in the admin, go to `/graphql` to test your queries.</p><div class="code-block"><button class="copy-btn">Copy</button><pre><code># Query for all books
+query {
+  allBooks {
+    title
+    author
+  }
+}
 
+# Query for a single book
+query {
+  bookById(id: 1) {
+    id
+    title
+    publicationYear
+  }
+}</code></pre></div></section>
+                        <section id="chapter6" class="content-section"><h2 class="text-3xl font-bold text-[#4C516D] mb-2">6. Implementing Mutations</h2><p class="mb-6">Mutations are used for all write operations (Create, Update, Delete). A mutation class defines its input `Arguments`, its output fields, and a `mutate` method that performs the database operation.</p><h3 class="text-xl font-semibold text-gray-700 mt-6 mb-4">Create Operation</h3><p class="mb-4">This mutation takes book details as arguments and creates a new `Book` object in the database.</p><div class="code-block"><button class="copy-btn">Copy</button><pre><code># books/schema.py
+class CreateBook(graphene.Mutation):
+    class Arguments:
+        title = graphene.String(required=True)
+        author = graphene.String(required=True)
+        publication_year = graphene.Int(required=True)
 
+    book = graphene.Field(lambda: BookType)
+
+    @classmethod
+    def mutate(cls, root, info, title, author, publication_year):
+        book = Book(title=title, author=author, publication_year=publication_year)
+        book.save()
+        return CreateBook(book=book)
+
+class Mutation(graphene.ObjectType):
+    create_book = CreateBook.Field()</code></pre></div></section>
+                        <section id="chapter7" class="content-section"><h2 class="text-3xl font-bold text-[#4C516D] mb-2">7. Securing Your API</h2><p class="mb-6">A production API must be secure. This involves authentication (who is the user?) and authorization (what is this user allowed to do?). For stateless APIs, JSON Web Tokens (JWT) are a common solution.</p><div class="bg-white p-6 rounded-lg shadow-md space-y-4"><div><h4 class="font-bold text-lg text-[#8A9A5B]">Authentication with `django-graphql-jwt`</h4><p>This library provides a simple way to add JWT authentication. It gives you mutations like `tokenAuth` to get a token, `verifyToken` to check it, and `refreshToken` to get a new one. The client sends the token in the `Authorization` header on subsequent requests.</p></div><div><h4 class="font-bold text-lg text-[#8A9A5B]">Authorization Checks</h4><p>Once a user is authenticated via the token, their user object is available in `info.context.user`. You can perform permission checks directly in your resolvers:</p><ul class="list-disc list-inside mt-2 text-gray-600"><li><b>Basic:</b> Check if a user is logged in with `info.context.user.is_authenticated`.</li><li><b>Model-Level:</b> Use Django's built-in permissions with `user.has_perm('books.add_book')`.</li><li><b>Object-Level:</b> Check if the user owns the specific object they are trying to modify (e.g., `if book.owner != user`).</li></ul></div></div></section>
+                        <section id="chapter8" class="content-section"><h2 class="text-3xl font-bold text-[#4C516D] mb-2">8. Advanced Data Retrieval</h2><p class="mb-6">To make your API truly useful, you need to provide clients with ways to handle large datasets. This includes filtering results, paginating through them, and ordering them.</p><div class="bg-white p-6 rounded-lg shadow-md space-y-4"><div><h4 class="font-bold text-lg text-[#8A9A5B]">Filtering with `django-filter`</h4><p>`graphene-django` integrates with `django-filter` to provide powerful, declarative filtering. By using `DjangoFilterConnectionField` and defining `filter_fields` on your type's `Meta` class, you can easily enable filtering by different fields and lookup types (e.g., `title_Icontains`).</p></div><div><h4 class="font-bold text-lg text-[#8A9A5B]">Pagination Strategies</h4><p>Never return a whole database table in one request. Pagination is essential.</p><ul class="list-disc list-inside mt-2 text-gray-600"><li><b>Offset/Limit:</b> Simple to implement but can be inefficient and unstable for large, changing datasets.</li><li><b>Relay Cursor-Based Connections:</b> The recommended approach. It uses opaque cursors to provide robust and stable pagination. `graphene-django` has excellent built-in support for the Relay specification.</li></ul></div></div></section>
+                        <section id="chapter9" class="content-section"><h2 class="text-3xl font-bold text-[#4C516D] mb-2">9. Performance: Solving the N+1 Problem</h2><p class="mb-6">The flexibility of GraphQL can lead to a major performance issue called the "N+1 query problem." This happens when a single GraphQL query results in one initial database query plus N additional queries for related data. Click the button below to see a visual explanation.</p><div class="text-center mb-6"><button id="play-n1-animation" class="bg-[#E2725B] text-white font-bold py-2 px-4 rounded-lg hover:bg-red-700 transition">Animate N+1 Problem</button></div><div id="n1-animation-container" class="bg-white p-6 rounded-lg shadow-md space-y-4 hidden"><div><h4 class="font-bold text-lg text-[#8A9A5B]">The Problem: Inefficient Queries</h4><p class="mb-2">A request for all authors and their books can trigger many database hits.</p><div class="space-y-2"><div class="n1-query bg-red-100 text-red-800 p-2 rounded">1. `SELECT * FROM authors;`</div><div class="n1-query bg-red-100 text-red-800 p-2 rounded">2. `SELECT * FROM books WHERE author_id = 1;`</div><div class="n1-query bg-red-100 text-red-800 p-2 rounded">3. `SELECT * FROM books WHERE author_id = 2;`</div><div class="n1-query bg-red-100 text-red-800 p-2 rounded">4. `...` (and so on for every author)</div></div></div><hr class="my-4"><div><h4 class="font-bold text-lg text-green-700">The Solution: Eager Loading</h4><p class="mb-2">Using Django's `prefetch_related` in the top-level resolver reduces this to just two, highly efficient queries.</p><div class="space-y-2"><div class="bg-green-100 text-green-800 p-2 rounded">1. `SELECT * FROM authors;`</div><div class="bg-green-100 text-green-800 p-2 rounded">2. `SELECT * FROM books WHERE author_id IN (1, 2, ...);`</div></div></div></div></section>
+                        <section id="chapter11" class="content-section"><h2 class="text-3xl font-bold text-[#4C516D] mb-2">11. The Python GraphQL Ecosystem</h2><p class="mb-6">While this guide focuses on `graphene-django`, the Python ecosystem offers other excellent libraries. The choice depends on your project's needs and your team's preferred development style. This chart compares the three main players across several key features.</p><div class="chart-container"><canvas id="libraryComparisonChart"></canvas></div></section>
+                    </main>
+                </div>
+            </div>
+            <!-- Future learning modules will go here -->
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- Profile Page Navigation Logic ---
+            const profileNav = document.getElementById('profile-nav');
+            const mainContentSections = document.querySelectorAll('.main-content-section');
+            const mainProfileView = document.getElementById('main-profile-view');
+            const learningDetailView = document.getElementById('learning-detail-view');
+            const learningCardsContainer = document.querySelector('#learning .grid');
+            const backToProfileBtn = document.getElementById('back-to-profile');
+
+            function showMainContent(targetId) {
+                mainContentSections.forEach(section => {
+                    section.classList.toggle('active', section.id === targetId);
+                });
+            }
+
+            profileNav.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    e.preventDefault();
+                    const targetId = e.target.dataset.target;
+                    profileNav.querySelectorAll('a').forEach(link => link.classList.remove('active'));
+                    e.target.classList.add('active');
+                    showMainContent(targetId);
+                }
+            });
+            
+            // --- Learning Module Detail View Logic ---
+            learningCardsContainer.addEventListener('click', function(e) {
+                const card = e.target.closest('.learning-card');
+                if (card) {
+                    const targetModuleId = card.dataset.target;
+                    mainProfileView.style.display = 'none';
+                    learningDetailView.classList.add('active');
+                    
+                    document.querySelectorAll('.learning-module-content').forEach(module => {
+                        module.classList.toggle('active', module.id === targetModuleId);
+                    });
+
+                    if (targetModuleId === 'django-graphql-module') {
+                        initializeLearningModule();
+                    }
+                }
+            });
+
+            backToProfileBtn.addEventListener('click', function() {
+                learningDetailView.classList.remove('active');
+                mainProfileView.style.display = 'block';
+            });
+
+            // Set initial active state for profile
+            profileNav.querySelector('a[data-target="about"]').classList.add('active');
+            showMainContent('about');
+
+            // --- Learning Module Initialization (from the SPA) ---
+            let learningModuleInitialized = false;
+
+            function initializeLearningModule() {
+                if (learningModuleInitialized) return;
+
+                const learningModule = document.querySelector('#django-graphql-module');
+                const navLinks = learningModule.querySelectorAll('#main-nav .nav-link');
+                const subNavLinks = learningModule.querySelectorAll('#main-nav .sub-nav-link');
+                const contentSections = learningModule.querySelectorAll('.content-section');
+                const introSection = learningModule.querySelector('#intro');
+
+                function showSection(targetId) {
+                    contentSections.forEach(section => section.classList.remove('active'));
+                    const targetSection = learningModule.querySelector('#' + targetId);
+                    if (targetSection) {
+                        targetSection.classList.add('active');
+                        if(targetId === 'chapter11') renderLibraryChart();
+                    } else {
+                        introSection.classList.add('active');
+                    }
+                }
+
+                navLinks.forEach(link => {
+                    link.addEventListener('click', function() {
+                        const subNav = this.nextElementSibling;
+                        const isActive = this.classList.contains('active');
+                        navLinks.forEach(l => l.classList.remove('active'));
+                        learningModule.querySelectorAll('.sub-nav').forEach(sn => sn.classList.add('hidden'));
+                        if (!isActive) {
+                            this.classList.add('active');
+                            if (subNav) subNav.classList.remove('hidden');
+                        }
+                    });
+                });
+
+                subNavLinks.forEach(link => {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const targetId = this.dataset.target;
+                        subNavLinks.forEach(l => l.classList.remove('active'));
+                        this.classList.add('active');
+                        showSection(targetId);
+                        window.scrollTo(0, 0);
+                    });
+                });
+                
+                const firstNavLink = navLinks[0];
+                firstNavLink.classList.add('active');
+                firstNavLink.nextElementSibling.classList.remove('hidden');
+                const firstSubNavLink = subNavLinks[0];
+                firstSubNavLink.classList.add('active');
+                showSection(firstSubNavLink.dataset.target);
+
+                learningModule.querySelectorAll('.copy-btn').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const code = this.nextElementSibling.textContent;
+                        navigator.clipboard.writeText(code).then(() => {
+                            this.textContent = 'Copied!';
+                            setTimeout(() => { this.textContent = 'Copy'; }, 2000);
+                        });
+                    });
+                });
+
+                const comparisonData = {
+                    fetching: { rest: { title: 'REST', text: "Prone to over-fetching (getting too much data) or under-fetching (not getting enough, requiring more requests) due to fixed data structures per endpoint." }, graphql: { title: 'GraphQL', text: "Client requests exactly the data it needs by specifying fields in the query, eliminating over- and under-fetching completely." } },
+                    endpoints: { rest: { title: 'REST', text: "Uses multiple endpoints. Each URL typically represents a resource (e.g., `/users`, `/posts`)." }, graphql: { title: 'GraphQL', text: "Uses a single endpoint (e.g., `/graphql`) that serves all queries, mutations, and subscriptions." } },
+                    versioning: { rest: { title: 'REST', text: "Typically handled via URL path (e.g., `/v1/`, `/v2/`), which can lead to multiple versions of the API to maintain." }, graphql: { title: 'GraphQL', text: "Avoids versioning by allowing the schema to evolve. New fields are non-breaking, and old fields can be deprecated gracefully." } },
+                    caching: { rest: { title: 'REST', text: "Straightforward to cache using standard HTTP caching mechanisms due to distinct URLs and GET requests." }, graphql: { title: 'GraphQL', text: "More complex to cache at the HTTP level. Caching is typically handled on the client-side or with more advanced server-side strategies." } },
+                    errors: { rest: { title: 'REST', text: "Uses standard HTTP status codes (e.g., 404, 500). The format for error details in the response body is not standardized." }, graphql: { title: 'GraphQL', text: "Typically returns a 200 OK status, with specific errors detailed in a standard `errors` key in the JSON response." } }
+                };
+                const comparisonNav = learningModule.querySelector('#comparison-nav');
+                const comparisonContent = learningModule.querySelector('#comparison-content');
+                
+                comparisonNav.addEventListener('click', function(e) {
+                    if (e.target.classList.contains('comparison-item')) {
+                        const feature = e.target.dataset.feature;
+                        document.querySelectorAll('.comparison-item').forEach(item => item.classList.remove('active'));
+                        e.target.classList.add('active');
+                        const data = comparisonData[feature];
+                        comparisonContent.innerHTML = `<div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-[#8A9A5B]"><h4 class="text-xl font-bold mb-2">${data.rest.title}</h4><p>${data.rest.text}</p></div><div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-[#E2725B]"><h4 class="text-xl font-bold mb-2">${data.graphql.title}</h4><p>${data.graphql.text}</p></div>`;
+                    }
+                });
+                comparisonNav.querySelector('.comparison-item').click();
+
+                const playN1Btn = learningModule.querySelector('#play-n1-animation');
+                const n1Container = learningModule.querySelector('#n1-animation-container');
+                playN1Btn.addEventListener('click', function() {
+                    n1Container.classList.remove('hidden');
+                    const queries = n1Container.querySelectorAll('.n1-query');
+                    queries.forEach((q, index) => {
+                        q.style.animation = 'none';
+                        q.offsetHeight;
+                        q.style.animation = `fadeIn 0.5s forwards ${index * 0.3}s`;
+                    });
+                });
+
+                let libraryChart = null;
+                function renderLibraryChart() {
+                    if (libraryChart) libraryChart.destroy();
+                    const ctx = learningModule.querySelector('#libraryComparisonChart').getContext('2d');
+                    const data = {
+                        labels: ['Maturity', 'Async Support', 'Ease of Customization', 'Django Integration', 'Performance Tooling', 'Verbosity'],
+                        datasets: [
+                            { label: 'Graphene', data: [5, 2, 2, 5, 3, 2], backgroundColor: 'rgba(76, 81, 109, 0.2)', borderColor: 'rgba(76, 81, 109, 1)', pointBackgroundColor: 'rgba(76, 81, 109, 1)' },
+                            { label: 'Strawberry', data: [4, 5, 4, 4, 5, 4], backgroundColor: 'rgba(226, 114, 91, 0.2)', borderColor: 'rgba(226, 114, 91, 1)', pointBackgroundColor: 'rgba(226, 114, 91, 1)' },
+                            { label: 'Ariadne', data: [4, 5, 5, 3, 3, 3], backgroundColor: 'rgba(138, 154, 91, 0.2)', borderColor: 'rgba(138, 154, 91, 1)', pointBackgroundColor: 'rgba(138, 154, 91, 1)' }
+                        ]
+                    };
+                    libraryChart = new Chart(ctx, {
+                        type: 'radar', data: data,
+                        options: {
+                            responsive: true, maintainAspectRatio: false,
+                            plugins: { legend: { position: 'top' }, tooltip: { callbacks: { label: function(context) { let label = context.dataset.label || ''; if (label) label += ': '; if (context.parsed.r !== null) label += context.parsed.r + '/5'; return label; } } } },
+                            scales: { r: { angleLines: { display: true }, suggestedMin: 0, suggestedMax: 5, pointLabels: { font: { size: 14 } }, ticks: { stepSize: 1 } } }
+                        }
+                    });
+                }
+                
+                learningModuleInitialized = true;
+            }
+        });
+    </script>
 </body>
 </html>
