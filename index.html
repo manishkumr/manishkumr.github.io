@@ -105,7 +105,7 @@
         <div id="main-profile-view">
             <!-- Profile Header -->
             <header class="flex flex-col md:flex-row items-center md:items-start gap-6 mb-8">
-                <img src="images/8082598.jpg" alt="Profile Picture" class="w-36 h-36 rounded-full border-4 border-white shadow-lg">
+                <img src="https://manishkumr.github.io/assets/images/profile.png" alt="Profile Picture" class="w-36 h-36 rounded-full border-4 border-white shadow-lg">
                 <div class="mt-4 text-center md:text-left">
                     <h1 class="text-4xl font-bold text-gray-800">Manish Kumar</h1>
                     <p class="text-xl text-gray-500">Software Engineer | Full Stack Developer</p>
@@ -156,7 +156,11 @@
                             <p class="text-gray-600">A deep dive into building modern APIs with Django and GraphQL, from foundational concepts to production-ready techniques.</p>
                             <span class="text-blue-600 font-semibold mt-4 inline-block">Open Guide &rarr;</span>
                         </div>
-                        <!-- Future learning cards will go here -->
+                        <div class="learning-card border border-gray-200 rounded-lg p-6 hover:shadow-xl transition-shadow cursor-pointer" data-target="copilot-instructions-module">
+                            <h3 class="text-xl font-bold mb-2">Mastering GitHub Copilot with instructions.md</h3>
+                            <p class="text-gray-600">Learn how to customize GitHub Copilot's behavior for your repository by creating a simple instruction file.</p>
+                            <span class="text-blue-600 font-semibold mt-4 inline-block">Open Guide &rarr;</span>
+                        </div>
                     </div>
                 </section>
             </main>
@@ -276,6 +280,73 @@ class Mutation(graphene.ObjectType):
                     </main>
                 </div>
             </div>
+            
+            <!-- GitHub Copilot Instructions Module -->
+            <div id="copilot-instructions-module" class="learning-module-content learning-module">
+                <div class="bg-white p-8 rounded-lg shadow-md">
+                    <h2 class="text-4xl font-bold text-[#4C516D] mb-4">Mastering GitHub Copilot with instructions.md</h2>
+                    <p class="text-lg text-gray-600 mb-6">Unlock the full potential of GitHub Copilot by providing it with custom, repository-specific context. The <code>instructions.md</code> file is a powerful feature that allows you to guide Copilot, ensuring its suggestions are more relevant, accurate, and tailored to your specific project needs.</p>
+                    
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="bg-white p-6 rounded-lg shadow border-l-4 border-[#8A9A5B]">
+                            <h3 class="font-bold text-xl mb-2 text-[#8A9A5B]">Custom Context</h3>
+                            <p>Provide Copilot with project-specific context, coding standards, and architectural decisions to get better suggestions.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow border-l-4 border-[#E2725B]">
+                            <h3 class="font-bold text-xl mb-2 text-[#E2725B]">Repository-Wide Impact</h3>
+                            <p>A single instructions.md file affects all interactions with Copilot across your entire repository.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8">
+                        <h3 class="text-2xl font-bold text-[#4C516D] mb-4">Quick Start Guide</h3>
+                        <div class="space-y-4">
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <h4 class="font-semibold text-lg mb-2">Step 1: Create the File</h4>
+                                <p>Create a file named <code>instructions.md</code> in the root of your repository.</p>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <h4 class="font-semibold text-lg mb-2">Step 2: Define Your Guidelines</h4>
+                                <p>Write clear, concise instructions about your project's conventions, preferred libraries, and coding style.</p>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <h4 class="font-semibold text-lg mb-2">Step 3: Test and Iterate</h4>
+                                <p>Use Copilot in your project and refine your instructions based on the quality of suggestions you receive.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8">
+                        <h3 class="text-2xl font-bold text-[#4C516D] mb-4">Example Instructions</h3>
+                        <div class="learning-module code-block">
+                            <button class="copy-btn">Copy</button>
+                            <pre><code># Project Instructions for GitHub Copilot
+
+## Project Overview
+This is a Django-based web application with a React frontend.
+
+## Code Style Guidelines
+- Use Python 3.9+ features
+- Follow PEP 8 for Python code
+- Use TypeScript for all React components
+- Prefer functional components over class components
+- Use Tailwind CSS for styling
+
+## Architecture Decisions
+- Use Django REST framework for API endpoints
+- Implement authentication using JWT tokens
+- Store static files in AWS S3
+- Use PostgreSQL for the database
+
+## Preferred Libraries
+- For HTTP requests: use `requests` library
+- For date handling: use `dateutil`
+- For forms: use Django forms with validation
+- For testing: use pytest and Django's test framework</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!-- Future learning modules will go here -->
         </div>
     </div>
@@ -320,6 +391,8 @@ class Mutation(graphene.ObjectType):
 
                     if (targetModuleId === 'django-graphql-module') {
                         initializeLearningModule();
+                    } else if (targetModuleId === 'copilot-instructions-module') {
+                        initializeCopilotModule();
                     }
                 }
             });
@@ -453,6 +526,22 @@ class Mutation(graphene.ObjectType):
                 }
                 
                 learningModuleInitialized = true;
+            }
+            
+            // --- Copilot Instructions Module Initialization ---
+            function initializeCopilotModule() {
+                const copilotModule = document.querySelector('#copilot-instructions-module');
+                
+                // Initialize copy functionality for code blocks
+                copilotModule.querySelectorAll('.copy-btn').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const code = this.nextElementSibling.textContent;
+                        navigator.clipboard.writeText(code).then(() => {
+                            this.textContent = 'Copied!';
+                            setTimeout(() => { this.textContent = 'Copy'; }, 2000);
+                        });
+                    });
+                });
             }
         });
     </script>
