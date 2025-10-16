@@ -353,6 +353,39 @@ This is a Django-based web application with a React frontend.
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // --- Global Variables ---
+            let learningModuleInitialized = false;
+            let globalNavigateToChapter = null;
+
+            // --- URL Routing System ---
+            const routeMap = {
+                '/': 'about',
+                '/about_me': 'about',
+                '/projects': 'projects', 
+                '/learning': 'learning'
+            };
+
+            function getCurrentPath() {
+                // Check for hash-based routing first (GitHub Pages fallback)
+                if (window.location.hash && window.location.hash.startsWith('#/')) {
+                    return window.location.hash.substring(1);
+                }
+                return window.location.pathname;
+            }
+
+            function updateURL(path, title) {
+                const currentPath = getCurrentPath();
+                if (currentPath !== path) {
+                    // Use pushState for clean URLs, but maintain hash fallback compatibility
+                    window.history.pushState({ path: path }, title, path);
+                }
+            }
+
+            function getChapterFromPath(path) {
+                const match = path.match(/\/learning\/django-graphql\/(.+)$/);
+                return match ? match[1] : null;
+            }
+
             // --- Profile Page Navigation Logic ---
             const profileNav = document.getElementById('profile-nav');
             const mainContentSections = document.querySelectorAll('.main-content-section');
@@ -365,52 +398,146 @@ This is a Django-based web application with a React frontend.
                 mainContentSections.forEach(section => {
                     section.classList.toggle('active', section.id === targetId);
                 });
+                
+                // Update navigation highlighting
+                profileNav.querySelectorAll('a').forEach(link => {
+                    link.classList.toggle('active', link.dataset.target === targetId);
+                });
+            }
+
+            function navigateToSection(targetId, updateHistory = true) {
+                const sectionUrls = {
+                    'about': '/about_me',
+                    'projects': '/projects', 
+                    'learning': '/learning'
+                };
+                
+                showMainContent(targetId);
+                
+                if (updateHistory) {
+                    const url = targetId === 'about' ? '/' : sectionUrls[targetId];
+                    const title = `Software Engineer | Profile - ${targetId.charAt(0).toUpperCase() + targetId.slice(1)}`;
+                    updateURL(url, title);
+                }
             }
 
             profileNav.addEventListener('click', function(e) {
                 if (e.target.tagName === 'A') {
                     e.preventDefault();
                     const targetId = e.target.dataset.target;
-                    profileNav.querySelectorAll('a').forEach(link => link.classList.remove('active'));
-                    e.target.classList.add('active');
-                    showMainContent(targetId);
+                    navigateToSection(targetId, true);
                 }
             });
             
             // --- Learning Module Detail View Logic ---
+            function showLearningModule(targetModuleId, chapterTarget = null, updateHistory = true) {
+                mainProfileView.style.display = 'none';
+                learningDetailView.classList.add('active');
+                
+                document.querySelectorAll('.learning-module-content').forEach(module => {
+                    module.classList.toggle('active', module.id === targetModuleId);
+                });
+
+                if (targetModuleId === 'django-graphql-module') {
+                    initializeLearningModule(chapterTarget);
+                } else if (targetModuleId === 'copilot-instructions-module') {
+                    initializeCopilotModule();
+                }
+
+                if (updateHistory) {
+                    const moduleUrls = {
+                        'django-graphql-module': '/learning/django-graphql',
+                        'copilot-instructions-module': '/learning/copilot-instructions'
+                    };
+                    let url = moduleUrls[targetModuleId];
+                    if (chapterTarget && targetModuleId === 'django-graphql-module') {
+                        url += '/' + chapterTarget;
+                    }
+                    const title = `Software Engineer | Profile - Learning Module`;
+                    updateURL(url, title);
+                }
+            }
+
+            function returnToProfile(updateHistory = true) {
+                learningDetailView.classList.remove('active');
+                mainProfileView.style.display = 'block';
+                
+                if (updateHistory) {
+                    updateURL('/learning', 'Software Engineer | Profile - Learning');
+                }
+            }
+
             learningCardsContainer.addEventListener('click', function(e) {
                 const card = e.target.closest('.learning-card');
                 if (card) {
                     const targetModuleId = card.dataset.target;
-                    mainProfileView.style.display = 'none';
-                    learningDetailView.classList.add('active');
-                    
-                    document.querySelectorAll('.learning-module-content').forEach(module => {
-                        module.classList.toggle('active', module.id === targetModuleId);
-                    });
-
-                    if (targetModuleId === 'django-graphql-module') {
-                        initializeLearningModule();
-                    } else if (targetModuleId === 'copilot-instructions-module') {
-                        initializeCopilotModule();
-                    }
+                    showLearningModule(targetModuleId, null, true);
                 }
             });
 
             backToProfileBtn.addEventListener('click', function() {
-                learningDetailView.classList.remove('active');
-                mainProfileView.style.display = 'block';
+                returnToProfile(true);
             });
 
-            // Set initial active state for profile
-            profileNav.querySelector('a[data-target="about"]').classList.add('active');
-            showMainContent('about');
+            // --- Initial Route Handling ---
+            function handleInitialRoute() {
+                const path = getCurrentPath();
+                
+                // Handle learning module routes
+                if (path.startsWith('/learning/')) {
+                    const chapterMatch = getChapterFromPath(path);
+                    if (chapterMatch) {
+                        // Django GraphQL module with specific chapter
+                        navigateToSection('learning', false);
+                        showLearningModule('django-graphql-module', chapterMatch, false);
+                        return;
+                    } else if (path === '/learning/django-graphql') {
+                        // Django GraphQL module main page
+                        navigateToSection('learning', false);
+                        showLearningModule('django-graphql-module', null, false);
+                        return;
+                    } else if (path === '/learning/copilot-instructions') {
+                        // Copilot Instructions module
+                        navigateToSection('learning', false);
+                        showLearningModule('copilot-instructions-module', null, false);
+                        return;
+                    }
+                }
+                
+                // Handle main section routes
+                const targetSection = routeMap[path] || 'about';
+                navigateToSection(targetSection, false);
+            }
+
+            // Handle browser back/forward buttons
+            window.addEventListener('popstate', function(e) {
+                if (e.state && e.state.path) {
+                    // Reload the page state based on the URL
+                    handleInitialRoute();
+                } else {
+                    // Fallback for direct navigation
+                    handleInitialRoute();
+                }
+            });
+
+            // Handle hash change for GitHub Pages fallback routing
+            window.addEventListener('hashchange', function() {
+                handleInitialRoute();
+            });
+
+            // Set initial active state and handle current URL
+            handleInitialRoute();
 
             // --- Learning Module Initialization (from the SPA) ---
-            let learningModuleInitialized = false;
 
-            function initializeLearningModule() {
-                if (learningModuleInitialized) return;
+            function initializeLearningModule(initialChapter = null) {
+                if (learningModuleInitialized) {
+                    // If already initialized, just navigate to the specified chapter
+                    if (initialChapter && globalNavigateToChapter) {
+                        globalNavigateToChapter(initialChapter);
+                    }
+                    return;
+                }
 
                 const learningModule = document.querySelector('#django-graphql-module');
                 const navLinks = learningModule.querySelectorAll('#main-nav .nav-link');
@@ -429,6 +556,29 @@ This is a Django-based web application with a React frontend.
                     }
                 }
 
+                function navigateToChapter(chapterId, updateHistory = true) {
+                    subNavLinks.forEach(l => l.classList.remove('active'));
+                    const targetLink = learningModule.querySelector(`[data-target="${chapterId}"]`);
+                    if (targetLink) {
+                        targetLink.classList.add('active');
+                        // Expand the parent section if needed
+                        const parentNavLink = targetLink.closest('li').previousElementSibling;
+                        if (parentNavLink) {
+                            parentNavLink.classList.add('active');
+                            const subNav = parentNavLink.nextElementSibling;
+                            if (subNav) subNav.classList.remove('hidden');
+                        }
+                    }
+                    showSection(chapterId);
+                    if (updateHistory) {
+                        updateURL('/learning/django-graphql/' + chapterId, 'Software Engineer | Profile - Learning');
+                    }
+                    window.scrollTo(0, 0);
+                }
+
+                // Store the function globally for access from route handling
+                globalNavigateToChapter = navigateToChapter;
+
                 navLinks.forEach(link => {
                     link.addEventListener('click', function() {
                         const subNav = this.nextElementSibling;
@@ -446,20 +596,23 @@ This is a Django-based web application with a React frontend.
                     link.addEventListener('click', function(e) {
                         e.preventDefault();
                         const targetId = this.dataset.target;
-                        subNavLinks.forEach(l => l.classList.remove('active'));
-                        this.classList.add('active');
-                        showSection(targetId);
-                        window.scrollTo(0, 0);
+                        navigateToChapter(targetId, true);
                     });
                 });
                 
-                const firstNavLink = navLinks[0];
-                firstNavLink.classList.add('active');
-                firstNavLink.nextElementSibling.classList.remove('hidden');
-                const firstSubNavLink = subNavLinks[0];
-                firstSubNavLink.classList.add('active');
-                showSection(firstSubNavLink.dataset.target);
+                // Set initial state
+                if (initialChapter) {
+                    navigateToChapter(initialChapter, false);
+                } else {
+                    const firstNavLink = navLinks[0];
+                    firstNavLink.classList.add('active');
+                    firstNavLink.nextElementSibling.classList.remove('hidden');
+                    const firstSubNavLink = subNavLinks[0];
+                    firstSubNavLink.classList.add('active');
+                    showSection(firstSubNavLink.dataset.target);
+                }
 
+                // Copy button functionality
                 learningModule.querySelectorAll('.copy-btn').forEach(button => {
                     button.addEventListener('click', function() {
                         const code = this.nextElementSibling.textContent;
@@ -470,6 +623,7 @@ This is a Django-based web application with a React frontend.
                     });
                 });
 
+                // Comparison functionality (existing code)
                 const comparisonData = {
                     fetching: { rest: { title: 'REST', text: "Prone to over-fetching (getting too much data) or under-fetching (not getting enough, requiring more requests) due to fixed data structures per endpoint." }, graphql: { title: 'GraphQL', text: "Client requests exactly the data it needs by specifying fields in the query, eliminating over- and under-fetching completely." } },
                     endpoints: { rest: { title: 'REST', text: "Uses multiple endpoints. Each URL typically represents a resource (e.g., `/users`, `/posts`)." }, graphql: { title: 'GraphQL', text: "Uses a single endpoint (e.g., `/graphql`) that serves all queries, mutations, and subscriptions." } },
