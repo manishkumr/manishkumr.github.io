@@ -353,17 +353,16 @@ This is a Django-based web application with a React frontend.
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // --- Global Variables ---
+            let learningModuleInitialized = false;
+            let globalNavigateToChapter = null;
+
             // --- URL Routing System ---
             const routeMap = {
                 '/': 'about',
                 '/about_me': 'about',
                 '/projects': 'projects', 
                 '/learning': 'learning'
-            };
-
-            const learningModuleMap = {
-                '/learning/django-graphql': 'django-graphql-module',
-                '/learning/copilot-instructions': 'copilot-instructions-module'
             };
 
             function getCurrentPath() {
@@ -486,11 +485,11 @@ This is a Django-based web application with a React frontend.
                 
                 // Handle learning module routes
                 if (path.startsWith('/learning/')) {
-                    const chapterMatch = path.match(/\/learning\/django-graphql\/(.+)$/);
+                    const chapterMatch = getChapterFromPath(path);
                     if (chapterMatch) {
                         // Django GraphQL module with specific chapter
                         navigateToSection('learning', false);
-                        showLearningModule('django-graphql-module', chapterMatch[1], false);
+                        showLearningModule('django-graphql-module', chapterMatch, false);
                         return;
                     } else if (path === '/learning/django-graphql') {
                         // Django GraphQL module main page
@@ -530,8 +529,6 @@ This is a Django-based web application with a React frontend.
             handleInitialRoute();
 
             // --- Learning Module Initialization (from the SPA) ---
-            let learningModuleInitialized = false;
-            let globalNavigateToChapter = null;
 
             function initializeLearningModule(initialChapter = null) {
                 if (learningModuleInitialized) {

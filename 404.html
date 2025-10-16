@@ -8,8 +8,21 @@
         // Redirect to main page while preserving the URL path
         // This enables direct URL access to work on GitHub Pages
         const path = window.location.pathname;
-        const newUrl = window.location.origin + '/#' + path;
-        window.location.replace(newUrl);
+        
+        // Validate path to prevent open redirect attacks
+        const validPaths = [
+            '/', '/about_me', '/projects', '/learning',
+            '/learning/django-graphql', '/learning/copilot-instructions'
+        ];
+        const isChapterPath = /^\/learning\/django-graphql\/chapter\d+$/.test(path);
+        
+        if (validPaths.includes(path) || isChapterPath) {
+            const newUrl = window.location.origin + '/#' + path;
+            window.location.replace(newUrl);
+        } else {
+            // Invalid path, redirect to home
+            window.location.replace(window.location.origin);
+        }
     </script>
 </head>
 <body>
